@@ -26,14 +26,14 @@ func (osFS) Open(name string) (file, error) {
 	return os.Open(name)
 }
 
-//FileRead is responsible for load services
-type FileRead struct {
+//Read is responsible for load services
+type Read struct {
 	os fileSystem
 }
 
-//Read is responsible for read file and return the bytes
-func (fileRead FileRead) Read(path string) ([]string, error) {
-	handle, err := fileRead.os.Open(path)
+//Exec is responsible for read file and return the bytes
+func (read Read) Exec(path string) ([]string, error) {
+	handle, err := read.os.Open(path)
 	if err != nil {
 		return nil, err
 	}
