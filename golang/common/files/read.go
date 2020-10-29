@@ -1,6 +1,7 @@
 package files
 
 import (
+	"bufio"
 	"io"
 	"os"
 )
@@ -31,12 +32,17 @@ type FileRead struct {
 }
 
 //Read is responsible for read file and return the bytes
-func (fileRead FileRead) Read(path string) ([][]byte, error) {
+func (fileRead FileRead) Read(path string) ([]string, error) {
 	handle, err := fileRead.os.Open(path)
 	if err != nil {
 		return nil, err
 	}
 	defer handle.Close()
-
-	return nil, nil
+	scanner := bufio.NewScanner(handle)
+	scanner.Split(bufio.ScanLines)
+	var inputs []string
+	for scanner.Scan() {
+		inputs = append(inputs, scanner.Text())
+	}
+	return inputs, nil
 }
