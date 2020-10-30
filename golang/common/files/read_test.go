@@ -10,7 +10,7 @@ import (
 
 func TestRead(t *testing.T) {
 	t.Run("Should Exec throws if Open throws", func(t *testing.T) {
-		mockFileSystem := &MockFileSystemObject{}
+		mockFileSystem := &mockFileSystemObject{}
 		mockFileSystem.On("Open", mockPath).Return(os.Stdin, errors.New("Open throws")).Once()
 		read := Read{os: mockFileSystem}
 		out, err := read.Exec(mockPath)
