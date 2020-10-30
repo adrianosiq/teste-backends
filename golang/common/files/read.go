@@ -31,6 +31,13 @@ type Read struct {
 	os fileSystem
 }
 
+//NewRead create a new read
+func NewRead() Read {
+	return Read{
+		os: osFS{},
+	}
+}
+
 //Exec is responsible for read file and return the bytes
 func (read Read) Exec(path string) ([]string, error) {
 	handle, err := read.os.Open(path)

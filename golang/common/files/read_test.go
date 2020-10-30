@@ -20,7 +20,7 @@ func TestRead(t *testing.T) {
 	})
 
 	t.Run("Should Exec return inputs on success", func(t *testing.T) {
-		read := Read{os: osFS{}}
+		read := NewRead()
 		out, err := read.Exec("mock-input-000.txt")
 		var a = assert.New(t)
 		a.Nil(err)
