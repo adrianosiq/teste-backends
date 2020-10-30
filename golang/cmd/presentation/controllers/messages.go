@@ -18,9 +18,10 @@ func NewMessages(parse domain.MessagesParse, consume domain.MessagesConsume) Mes
 
 //Handle is reponsible for process inputs and return proposals approved
 func (messages Messages) Handle(inputs []string) ([]domain.ProposalApproved, error) {
-	_, err := messages.parse.StringToEvent(inputs)
+	events, err := messages.parse.StringToEvent(inputs)
 	if err != nil {
 		return nil, err
 	}
-	return []domain.ProposalApproved{}, nil
+	approved := messages.consume.Process(events)
+	return approved, nil
 }
