@@ -10,3 +10,5 @@ func (m mockFileSystemObject) Args() []string {
 	args := m.Called()
 	return args.Get(0).([]string)
 }
+
+var mockParams = []string{"cmd", "input-000.txr"}

@@ -16,4 +16,14 @@ func TestRead(t *testing.T) {
 		a.Nil(out)
 		a.Error(err)
 	})
+
+	t.Run("Should Get return parameters on success", func(t *testing.T) {
+		mockFileSystem := &mockFileSystemObject{}
+		mockFileSystem.On("Args").Return(mockParams).Once()
+		arguments := Arguments{os: mockFileSystem}
+		out, err := arguments.Get()
+		var a = assert.New(t)
+		a.Nil(err)
+		a.Equal(mockParams, out)
+	})
 }
