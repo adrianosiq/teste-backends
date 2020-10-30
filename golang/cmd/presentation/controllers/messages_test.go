@@ -21,4 +21,16 @@ func TestMessages(t *testing.T) {
 		a.Nil(out)
 		a.Error(err)
 	})
+
+	t.Run("Should Handle return ProposalApproved on success", func(t *testing.T) {
+		mockMessagesParse := &presentation.MockMessagesParse{}
+		mockMessagesParse.On("StringToEvent", []string{}).Return([]domain.Event{}, nil).Once()
+		mockMessagesConsume := &presentation.MockMessagesConsume{}
+		mockMessagesConsume.On("Process", []domain.Event{}).Return(presentation.MockProposalApproved).Once()
+		messages := NewMessages(mockMessagesParse, mockMessagesConsume)
+		out, err := messages.Handle([]string{})
+		var a = assert.New(t)
+		a.Nil(err)
+		a.Equal(presentation.MockProposalApproved, out)
+	})
 }
