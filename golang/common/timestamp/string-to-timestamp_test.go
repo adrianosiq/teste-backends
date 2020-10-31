@@ -18,4 +18,15 @@ func TestStringToTimestamp(t *testing.T) {
 		a.Equal(time.Time{}, out)
 		a.Error(err)
 	})
+
+	t.Run("Should ParseTimestamp return timestamp on success", func(t *testing.T) {
+		timestamp := time.Now()
+		mockFileSystem := &mockFileSystemObject{}
+		mockFileSystem.On("Parse", mockStringTimestamp).Return(timestamp, nil).Once()
+		stringToTimestamp := StringToTimestamp{os: mockFileSystem}
+		out, err := stringToTimestamp.ParseTimestamp(mockStringTimestamp)
+		var a = assert.New(t)
+		a.Nil(err)
+		a.Equal(timestamp, out)
+	})
 }
