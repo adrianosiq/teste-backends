@@ -7,12 +7,12 @@ import (
 
 //Parse is responsible for load services
 type Parse struct {
-	convertString infra.ConvertStringToJSON
+	convertString infra.ConvertString
 	convertEvent  infra.ConvertEvent
 }
 
 //NewParse create a new parse
-func NewParse(convertString infra.ConvertStringToJSON, convertEvent infra.ConvertEvent) Parse {
+func NewParse(convertString infra.ConvertString, convertEvent infra.ConvertEvent) Parse {
 	return Parse{
 		convertString: convertString,
 		convertEvent:  convertEvent,

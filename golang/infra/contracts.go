@@ -4,8 +4,8 @@ import (
 	"github.com/adrianosiq/teste-backends/golang/domain"
 )
 
-//ConvertStringToJSON is responsible for methods public the string to json
-type ConvertStringToJSON interface {
+//ConvertString is responsible for methods public the string to json
+type ConvertString interface {
 	StringToJSON(inputs []string) ([][]byte, error)
 }
 

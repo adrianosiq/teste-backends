@@ -10,10 +10,10 @@ import (
 
 func TestStringToEvent(t *testing.T) {
 	t.Run("Should StringToEvent throws if StringToJSON throws", func(t *testing.T) {
-		mockConvertStringToJSON := &domain.MockConvertStringToJSON{}
-		mockConvertStringToJSON.On("StringToJSON", []string{}).Return([][]byte{}, errors.New("StringToJSON throws")).Once()
+		mockConvertString := &domain.MockConvertString{}
+		mockConvertString.On("StringToJSON", []string{}).Return([][]byte{}, errors.New("StringToJSON throws")).Once()
 		mockConvertEvent := &domain.MockConvertEvent{}
-		parse := NewParse(mockConvertStringToJSON, mockConvertEvent)
+		parse := NewParse(mockConvertString, mockConvertEvent)
 		out, err := parse.StringToEvent([]string{})
 		var a = assert.New(t)
 		a.Nil(out)
@@ -21,11 +21,11 @@ func TestStringToEvent(t *testing.T) {
 	})
 
 	t.Run("Should StringToEvent return Event on success", func(t *testing.T) {
-		mockConvertStringToJSON := &domain.MockConvertStringToJSON{}
-		mockConvertStringToJSON.On("StringToJSON", []string{}).Return([][]byte{}, nil).Once()
+		mockConvertString := &domain.MockConvertString{}
+		mockConvertString.On("StringToJSON", []string{}).Return([][]byte{}, nil).Once()
 		mockConvertEvent := &domain.MockConvertEvent{}
 		mockConvertEvent.On("CreateEvent", [][]byte{}).Return(domain.MockEvent).Once()
-		parse := NewParse(mockConvertStringToJSON, mockConvertEvent)
+		parse := NewParse(mockConvertString, mockConvertEvent)
 		out, err := parse.StringToEvent([]string{})
 		var a = assert.New(t)
 		a.Nil(err)

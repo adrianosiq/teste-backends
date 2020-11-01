@@ -7,12 +7,12 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-//MockConvertStringToJSON is responsible for mocks the convert string to JSON
-type MockConvertStringToJSON struct {
+//MockConvertString is responsible for mocks the convert string to JSON
+type MockConvertString struct {
 	mock.Mock
 }
 
-func (m MockConvertStringToJSON) StringToJSON(inputs []string) ([][]byte, error) {
+func (m MockConvertString) StringToJSON(inputs []string) ([][]byte, error) {
 	args := m.Called(inputs)
 	return args.Get(0).([][]byte), args.Error(1)
 }
