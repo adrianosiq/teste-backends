@@ -26,6 +26,15 @@ func (m MockConvertEvent) CreateEvent(data [][]byte) []Event {
 	return args.Get(0).([]Event)
 }
 
+type MockValidateEvent struct {
+	mock.Mock
+}
+
+func (m MockValidateEvent) Validation(events []Event) []ProposalApproved {
+	args := m.Called(events)
+	return args.Get(0).([]ProposalApproved)
+}
+
 //MockEvent is responsible for mock events return
 var MockEvent = []Event{
 	{
@@ -80,5 +89,15 @@ var MockEvent = []Event{
 		ProponentAge:           19,
 		ProponentMonthlyIncome: 61400.0,
 		ProponentIsMain:        false,
+	},
+}
+
+//MockProposalApproved is reponsible for testing return Messages
+var MockProposalApproved = []ProposalApproved{
+	{
+		ProposalID: uuid.MustParse("bd6abe95-7c44-41a4-92d0-edf4978c9f4e"),
+	},
+	{
+		ProposalID: uuid.MustParse("af6e600b-2622-40d1-89ad-d3e5b6cc2fdf"),
 	},
 }
