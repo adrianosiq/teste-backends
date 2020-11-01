@@ -5,7 +5,7 @@ import (
 )
 
 const (
-	layout = "2006-02-01T03:04:00Z"
+	format = time.RFC3339
 )
 
 type fileSystem interface {
@@ -15,7 +15,7 @@ type fileSystem interface {
 type osFS struct{}
 
 func (osFS) Parse(value string) (time.Time, error) {
-	return time.Parse(layout, value)
+	return time.Parse(format, value)
 }
 
 //StringToTimestamp is responsible for load services

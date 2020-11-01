@@ -2,6 +2,7 @@ package timestamp
 
 import (
 	"errors"
+	"fmt"
 	"testing"
 	"time"
 
@@ -20,13 +21,10 @@ func TestStringToTimestamp(t *testing.T) {
 	})
 
 	t.Run("Should ParseTimestamp return timestamp on success", func(t *testing.T) {
-		timestamp := time.Now()
-		mockFileSystem := &mockFileSystemObject{}
-		mockFileSystem.On("Parse", mockStringTimestamp).Return(timestamp, nil).Once()
-		stringToTimestamp := StringToTimestamp{os: mockFileSystem}
+		stringToTimestamp := NewStringToTimestamp()
 		out, err := stringToTimestamp.ParseTimestamp(mockStringTimestamp)
 		var a = assert.New(t)
 		a.Nil(err)
-		a.Equal(timestamp, out)
+		a.Equal("2019-11-11 15:56:04 +0000 UTC", fmt.Sprint(out))
 	})
 }
