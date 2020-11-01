@@ -13,3 +13,8 @@ type ConvertStringToJSON interface {
 type ConvertEvent interface {
 	CreateEvent(data [][]byte) []domain.Event
 }
+
+//ValidateEvent is responsible for methods public the validate
+type ValidateEvent interface {
+	Validation(events []domain.Event) []domain.ProposalApproved
+}
