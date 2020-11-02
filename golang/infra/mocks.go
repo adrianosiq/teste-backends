@@ -1,6 +1,12 @@
 package infra
 
-import "github.com/stretchr/testify/mock"
+import (
+	"time"
+
+	"github.com/adrianosiq/teste-backends/golang/domain"
+	"github.com/google/uuid"
+	"github.com/stretchr/testify/mock"
+)
 
 type MockString struct {
 	mock.Mock
@@ -52,4 +58,18 @@ var MockStringSplit = []string{
 	"bd6abe95-7c44-41a4-92d0-edf4978c9f4e",
 	"684397.0",
 	"72",
+}
+
+var parseEventTimestamp, _ = time.Parse(time.RFC3339, "2019-11-11T13:26:04Z")
+
+var MockEventExp = []domain.Event{
+	{
+		EventID:                             uuid.MustParse("c2d06c4f-e1dc-4b2a-af61-ba15bc6d8610"),
+		EventSchema:                         "proposal",
+		EventAction:                         "created",
+		EventTimestamp:                      parseEventTimestamp,
+		ProposalID:                          uuid.MustParse("bd6abe95-7c44-41a4-92d0-edf4978c9f4e"),
+		ProposalLoanValue:                   684397.0,
+		ProposalNumberOfMonthlyInstallments: 72,
+	},
 }
