@@ -84,12 +84,12 @@ func (str String) StringToJSON(inputs []string) ([][]byte, error) {
 			if err != nil {
 				return [][]byte{}, err
 			}
-			_, err = str.deps.CreateJSON(selected, strSplit)
+			createdJSON, err := str.deps.CreateJSON(selected, strSplit)
 			if err != nil {
 				return [][]byte{}, err
 			}
+			dataJSON = append(dataJSON, createdJSON)
 		}
 	}
-
 	return dataJSON, nil
 }
