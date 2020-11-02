@@ -33,4 +33,12 @@ func TestString(t *testing.T) {
 		a.Error(err)
 		a.Equal([][]byte{}, out)
 	})
+
+	t.Run("Should StringToJSON return JSON on success", func(t *testing.T) {
+		str := NewString()
+		out, err := str.StringToJSON(infra.MockStringToJSON)
+		var a = assert.New(t)
+		a.Nil(err)
+		a.NotNil(out)
+	})
 }
