@@ -57,6 +57,7 @@ func (d stringDependencies) CreateJSON(fields []string, values []string) ([]byte
 		}
 		str += fmt.Sprintf("\"%s\":\"%s\",", field, values[i])
 	}
+	str = str[:len(str)-1]
 	str = fmt.Sprintf(`{%s}`, str)
 	return []byte(str), nil
 }
