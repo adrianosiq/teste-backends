@@ -9,6 +9,7 @@ type dependecies interface {
 	Fields() []string
 	Split(input string) []string
 	SelectType(schema string, action string, fields []string) ([]string, error)
+	CreateJSON(fields []string, values []string) ([]byte, error)
 }
 
 type deps struct{}
@@ -48,6 +49,18 @@ func (d deps) SelectType(schema string, action string, fields []string) ([]strin
 	return nil, fmt.Errorf("unmapped schema")
 }
 
+func (d deps) CreateJSON(fields []string, values []string) ([]byte, error) {
+	var str string
+	for i, field := range fields {
+		if i > len(values) {
+			return nil, fmt.Errorf("malformed values in the input")
+		}
+		str += fmt.Sprintf("\"%s\":\"%s\",", field, values[i])
+	}
+	str = fmt.Sprintf(`{%s}`, str)
+	return []byte(str), nil
+}
+
 //String load is responsible for load depedencies
 type String struct {
 	deps dependecies
@@ -67,7 +80,11 @@ func (str String) StringToJSON(inputs []string) ([][]byte, error) {
 	for _, input := range inputs {
 		strSplit := str.deps.Split(input)
 		if len(strSplit) > 1 {
-			_, err := str.deps.SelectType(strSplit[1], strSplit[2], fields)
+			selected, err := str.deps.SelectType(strSplit[1], strSplit[2], fields)
+			if err != nil {
+				return [][]byte{}, err
+			}
+			_, err = str.deps.CreateJSON(selected, strSplit)
 			if err != nil {
 				return [][]byte{}, err
 			}
