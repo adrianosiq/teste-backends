@@ -5,16 +5,16 @@ import (
 	"strings"
 )
 
-type dependecies interface {
+type stringInterface interface {
 	Fields() []string
 	Split(input string) []string
 	SelectType(schema string, action string, fields []string) ([]string, error)
 	CreateJSON(fields []string, values []string) ([]byte, error)
 }
 
-type deps struct{}
+type stringDependencies struct{}
 
-func (d deps) Fields() []string {
+func (d stringDependencies) Fields() []string {
 	return []string{
 		"event_id", "event_schema", "event_action", "event_timestamp", "proposal_id",
 		"proposal_loan_value", "proposal_number_of_monthly_installments",
@@ -23,11 +23,11 @@ func (d deps) Fields() []string {
 	}
 }
 
-func (d deps) Split(input string) []string {
+func (d stringDependencies) Split(input string) []string {
 	return strings.Split(input, ",")
 }
 
-func (d deps) SelectType(schema string, action string, fields []string) ([]string, error) {
+func (d stringDependencies) SelectType(schema string, action string, fields []string) ([]string, error) {
 	selected := fields[:5]
 	switch {
 	case schema == "proposal" && action != "deleted":
@@ -49,7 +49,7 @@ func (d deps) SelectType(schema string, action string, fields []string) ([]strin
 	return nil, fmt.Errorf("unmapped schema")
 }
 
-func (d deps) CreateJSON(fields []string, values []string) ([]byte, error) {
+func (d stringDependencies) CreateJSON(fields []string, values []string) ([]byte, error) {
 	var str string
 	for i, field := range fields {
 		if i > len(values) {
@@ -63,13 +63,13 @@ func (d deps) CreateJSON(fields []string, values []string) ([]byte, error) {
 
 //String load is responsible for load depedencies
 type String struct {
-	deps dependecies
+	deps stringInterface
 }
 
 //NewString create new string
 func NewString() String {
 	return String{
-		deps: deps{},
+		deps: stringDependencies{},
 	}
 }
 
