@@ -28,18 +28,20 @@ func (d stringDependencies) Split(input string) []string {
 }
 
 func (d stringDependencies) SelectType(schema string, action string, fields []string) ([]string, error) {
-	selected := fields[:5]
 	switch {
 	case schema == "proposal" && action != "deleted":
+		selected := fields[:5]
 		selected = append(selected, fields[5:7]...)
 		return selected, nil
 	case schema == "warranty":
+		selected := fields[:5]
 		selected = append(selected, fields[7:8]...)
 		if action != "removed" {
 			selected = append(selected, fields[8:10]...)
 		}
 		return selected, nil
 	case schema == "proponent":
+		selected := fields[:5]
 		selected = append(selected, fields[10:11]...)
 		if action != "removed" {
 			selected = append(selected, fields[11:]...)
@@ -76,11 +78,11 @@ func NewString() String {
 
 //StringToJSON is responsible for receive string and convert in json
 func (str String) StringToJSON(inputs []string) ([][]byte, error) {
-	fields := str.deps.Fields()
 	var dataJSON [][]byte
 	for _, input := range inputs {
 		strSplit := str.deps.Split(input)
 		if len(strSplit) > 1 {
+			fields := str.deps.Fields()
 			selected, err := str.deps.SelectType(strSplit[1], strSplit[2], fields)
 			if err != nil {
 				return [][]byte{}, err
