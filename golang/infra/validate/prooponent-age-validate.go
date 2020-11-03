@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	minProponentAge = 18
+	minProponentAge int16 = 18
 )
 
 //ProponentAgeValidation is responsible for validating if preponent age is less the minumum
