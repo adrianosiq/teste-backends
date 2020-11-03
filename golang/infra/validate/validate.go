@@ -10,7 +10,7 @@ func removeEvent(checkEvent domain.Event, events []domain.Event) bool {
 		if event.EventSchema == "proposal" || event.EventAction != "removed" {
 			continue
 		}
-		if checkEvent.WarrantyID == event.WarrantyID || event.ProponentID == event.ProponentID {
+		if event.EventSchema == checkEvent.EventSchema && event.ProposalID == checkEvent.ProposalID && (checkEvent.WarrantyID == event.WarrantyID || event.ProponentID == event.ProponentID) {
 			return true
 		}
 	}
@@ -22,7 +22,7 @@ func updateEvent(updateEvent domain.Event, events []domain.Event) domain.Event {
 		if event.EventAction != "updated" || event.EventSchema != updateEvent.EventSchema {
 			continue
 		}
-		if event.ProposalID == updateEvent.ProposalID && event.EventTimestamp.After(updateEvent.EventTimestamp) {
+		if event.EventID == updateEvent.EventID && event.EventTimestamp.After(updateEvent.EventTimestamp) {
 			updateEvent = event
 		}
 	}
@@ -41,7 +41,7 @@ func filterEvents(events []domain.Event, schema string) []domain.Event {
 	}
 	selected := []domain.Event{}
 	for _, event := range filterEvents {
-		if !removeEvent(event, events) {
+		if !removeEvent(event, events) || event.EventSchema == "proposal" {
 			event = updateEvent(event, events)
 			selected = append(selected, event)
 		}
