@@ -22,7 +22,7 @@ type Event struct {
 	ProponentName                       string    `json:"proponent_name"`
 	ProponentAge                        int16     `json:"proponent_age,string"`
 	ProponentMonthlyIncome              float64   `json:"proponent_monthly_income,string"`
-	ProponentIsMain                     bool      `json:"proponent_is_main"`
+	ProponentIsMain                     bool      `json:"proponent_is_main,string"`
 }
 
 //ProposalApproved is responsible for grouping data from approved proposal
