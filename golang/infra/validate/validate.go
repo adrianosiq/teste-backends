@@ -22,6 +22,15 @@ func checkProposalDelete(events map[uuid.UUID]domain.Event) bool {
 	return false
 }
 
+func checkEventRemoved(events map[uuid.UUID]domain.Event, UUID uuid.UUID) bool {
+	for _, event := range events {
+		if event.EventAction == "removed" && (UUID == event.WarrantyID || UUID == event.ProponentID) {
+			return true
+		}
+	}
+	return false
+}
+
 func getProposalEvent(events map[uuid.UUID]domain.Event) domain.Event {
 	var proposalID uuid.UUID
 	proposal := make(map[uuid.UUID]domain.Event)
@@ -40,7 +49,9 @@ func getProponentsEvents(events map[uuid.UUID]domain.Event) []domain.Event {
 	for _, event := range events {
 		_, ok := proponents[event.ProponentID]
 		if !ok || (event.EventAction == "update" && event.EventTimestamp.After(proponents[event.ProponentID].EventTimestamp)) {
-			proponents[event.ProponentID] = event
+			if isRemoved := checkEventRemoved(events, event.WarrantyID); !isRemoved {
+				proponents[event.ProponentID] = event
+			}
 		}
 	}
 	return getEvents(proponents)
@@ -51,7 +62,9 @@ func getWarrantiesEvents(events map[uuid.UUID]domain.Event) []domain.Event {
 	for _, event := range events {
 		_, ok := warranties[event.WarrantyID]
 		if !ok || (event.EventAction == "update" && event.EventTimestamp.After(warranties[event.WarrantyID].EventTimestamp)) {
-			warranties[event.WarrantyID] = event
+			if isRemoved := checkEventRemoved(events, event.WarrantyID); !isRemoved {
+				warranties[event.WarrantyID] = event
+			}
 		}
 	}
 	return getEvents(warranties)
