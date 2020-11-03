@@ -1,6 +1,8 @@
 package controllers
 
-import "github.com/adrianosiq/teste-backends/golang/domain"
+import (
+	"github.com/adrianosiq/teste-backends/golang/domain"
+)
 
 //Messages is responsible for the services of the Messages
 type Messages struct {
